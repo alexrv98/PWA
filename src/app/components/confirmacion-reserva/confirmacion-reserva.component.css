@@ -1,0 +1,42 @@
+.reservation-container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "Arial", sans-serif;
+  text-align: center;
+}
+
+.reservation-header {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.reservation-logo {
+  height: 50px;
+  width: 180px;
+  margin-bottom: 10px;
+}
+
+.reservation-divider {
+  width: 100%;
+  height: 2px;
+  background: #ccc;
+  margin: 15px 0;
+}
+
+.reservation-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.reservation-table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.reservation-footer h5 {
+  margin-top: 10px;
+}

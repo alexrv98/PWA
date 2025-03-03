@@ -1,0 +1,129 @@
+<app-navbar></app-navbar>
+<main class="d-flex align-items-center justify-content-center bg-light">
+  <div class="registro-container">
+    <div class="registro-card">
+      <div class="text-center">
+        <img
+          class="brand-logo mb-3"
+          src="assets/logo.png"
+          alt="logo"
+          width="200"
+        />
+        <h4 class="text-dark">Registrate</h4>
+        <p class="text-muted">Registrate para poder reservar</p>
+      </div>
+      <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="nombre" class="form-label"></label>
+          <div class="input-group">
+            <span class="input-group-text"
+              ><i class="fa-regular fa-user"></i
+            ></span>
+            <input
+              id="nombre"
+              formControlName="nombre"
+              type="text"
+              class="form-control"
+              placeholder="Ingresa tu nombre"
+              required
+              maxlength="20"
+            />
+          </div>
+          <small
+            *ngIf="
+              registroForm.get('nombre')?.invalid &&
+              registroForm.get('nombre')?.touched
+            "
+            class="error"
+          >
+            <span *ngIf="registroForm.get('nombre')?.errors?.['required']">
+              El nombre es obligatorio.
+            </span>
+            <span *ngIf="registroForm.get('nombre')?.errors?.['minlength']">
+              Mínimo 3 caracteres.
+            </span>
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="correo" class="form-label"></label>
+          <div class="input-group">
+            <span class="input-group-text"
+              ><i class="fa-regular fa-envelope"></i
+            ></span>
+            <input
+              id="correo"
+              formControlName="correo"
+              type="email"
+              class="form-control"
+              placeholder="Ingresa tu correo"
+              maxlength="25"
+            />
+          </div>
+          <small
+            *ngIf="
+              registroForm.get('correo')?.invalid &&
+              registroForm.get('correo')?.touched
+            "
+            class="error"
+          >
+            <span *ngIf="registroForm.get('correo')?.errors?.['required']">
+              El correo es obligatorio.
+            </span>
+            <span *ngIf="registroForm.get('correo')?.errors?.['email']">
+              Formato de correo inválido.
+            </span>
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label"></label>
+          <div class="input-group">
+            <span class="input-group-text"
+              ><i class="fa-solid fa-lock"></i
+            ></span>
+            <input
+              id="password"
+              formControlName="password"
+              type="password"
+              class="form-control"
+              placeholder="Ingresa tu contraseña"
+              maxlength="12"
+            />
+          </div>
+          <small
+            *ngIf="
+              registroForm.get('password')?.invalid &&
+              registroForm.get('password')?.touched
+            "
+            class="error"
+          >
+            <span *ngIf="registroForm.get('password')?.errors?.['required']">
+              La contraseña es obligatoria.
+            </span>
+            <span *ngIf="registroForm.get('password')?.errors?.['minlength']">
+              Mínimo 6 caracteres.
+            </span>
+          </small>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-3">
+          Registrar
+        </button>
+
+        <div class="mt-3 text-center">
+          <p class="small">
+            ¿Tienes una cuenta?
+            <a routerLink="/login" class="text-primary">Inicia sesión aquí</a>
+          </p>
+        </div>
+      </form>
+
+      <div *ngIf="errorMessage" class="text-danger text-center mt-2">
+        {{ errorMessage }}
+      </div>
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>

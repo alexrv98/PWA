@@ -1,0 +1,74 @@
+<div *ngIf="habitaciones.length > 0; else sinHabitaciones">
+  <div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">Habitaciones</h4>
+      <button class="btn btn-success" (click)="abrirModal()">Agregar</button>
+    </div>
+
+    
+    <div class="card-body">
+      <table
+        class="table table-bordered row-border hover center"
+        datatable
+        [dtOptions]="dtOptions"
+      >
+        <thead class="table-light">
+          <tr>
+            <th>Número</th>
+            <th>Tipo</th>
+            <th>Capacidad</th>
+            <th>Camas</th>
+            <th>Precio por noche</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let habitacion of habitaciones">
+            <td>{{ habitacion.numero_habitacion }}</td>
+            <td>{{ habitacion.tipo_nombre }}</td>
+            <td>{{ habitacion.capacidad }} personas</td>
+            <td>{{ habitacion.camas }}</td>
+            <td>${{ habitacion.precio }}</td>
+            <td>
+              <button
+                class="btn btn-warning btn-sm"
+                (click)="abrirModalEditar(habitacion)"
+              >
+                Editar
+              </button>
+              <button
+                class="btn btn-danger btn-sm ms-2"
+                (click)="eliminarHabitacion(habitacion.id)"
+              >
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Mensaje si no hay habitaciones -->
+<ng-template #sinHabitaciones>
+  <div class="alert alert-warning text-center">
+    No hay habitaciones registradas.
+  </div>
+</ng-template>
+
+<app-modal-agregar-habitacion
+  *ngIf="mostrarModal"
+  [hotelId]="hotelId"
+  (habitacionAgregada)="cargarHabitaciones()"
+  (cerrarModal)="cerrarModal()"
+>
+</app-modal-agregar-habitacion>
+
+<app-modal-editar-habitacion
+  *ngIf="mostrarModalEditar"
+  [habitacion]="habitacionSeleccionada"
+  (habitacionEditada)="cargarHabitaciones()"
+  (cerrarModal)="cerrarModalEditar()"
+>
+</app-modal-editar-habitacion>

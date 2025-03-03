@@ -1,0 +1,142 @@
+<div class="container mt-5">
+  <div class="row">
+    <!-- Filtro por categoría -->
+    <div class="col-md-3">
+      <div class="card p-4 shadow-lg border-0 rounded-4">
+        <h5 class="fw-bold text-primary text-center">
+          <i class="fa-solid fa-tags"></i> Categorías
+        </h5>
+        <div class="form-floating mt-3">
+          <select
+            class="form-select"
+            [(ngModel)]="filtros.categoria"
+            (change)="filtrarPorCategoria()"
+          >
+            <option [value]="undefined">Todos</option>
+            <option *ngFor="let categoria of categorias" [value]="categoria.id">
+              {{ categoria.nombre }}
+            </option>
+          </select>
+          <label>
+            <i class="fa-solid fa-filter text-primary"></i> Filtrar por
+            categoría
+          </label>
+        </div>
+      </div>
+
+      <!-- Mapa Interactivo -->
+      <div class="card mt-4 p-3 shadow-lg border-0 rounded-4">
+        <h5 class="fw-bold text-primary text-center">
+          <i class="fa-solid fa-map"></i> Mapa de Lugares
+        </h5>
+        <div id="map" style="height: 300px"></div>
+      </div>
+    </div>
+
+    <!-- Carrusel de Lugares Turísticos -->
+    <div class="col-md-9">
+      <div class="card p-4 shadow-lg border-0 rounded-4">
+        <h5 class="fw-bold text-primary text-center mb-3">
+          <i class="fa-solid fa-map-location-dot"></i> Lugares Turísticos
+        </h5>
+
+        <div class="position-relative">
+          <!-- Contenedor deslizable -->
+          <div class="d-flex overflow-auto gap-3 p-2" id="scrollContainer">
+            <!-- Placeholders mientras carga -->
+            <ng-container *ngIf="isLoading; else mostrarLugares">
+              <div
+                class="col-md-4 mb-3 d-flex flex-shrink-0"
+                *ngFor="let _ of [1, 2, 3, 4]"
+              >
+                <div
+                  class="card placeholder-wave shadow-sm rounded-4"
+                  aria-hidden="true"
+                  style="width: 25rem"
+                >
+                  <span
+                    class="placeholder col-12 rounded-top"
+                    style="height: 200px"
+                  ></span>
+                  <div class="card-body d-flex flex-column placeholder-glow">
+                    <h5 class="card-title fw-bold">
+                      <span class="placeholder col-8"></span>
+                    </h5>
+                    <p class="text-muted">
+                      <span class="placeholder col-6"></span>
+                    </p>
+                    <p class="small">
+                      <span class="placeholder col-10"></span>
+                      <span class="placeholder col-6"></span>
+                    </p>
+                    <div class="mt-auto">
+                      <button
+                        class="btn btn-outline-primary btn-sm w-100 disabled"
+                      >
+                        <span class="placeholder col-6"></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Mostrar lugares cuando la carga haya terminado -->
+            <ng-template #mostrarLugares>
+              <div
+                class="col-md-4 mb-3 d-flex flex-shrink-0"
+                *ngFor="let lugar of lugaresFiltrados"
+              >
+                <div
+                  class="card lugar-card shadow-sm rounded-4"
+                  style="width: 25rem"
+                >
+                  <img
+                    [src]="lugar.imagen"
+                    class="rounded-top"
+                    alt="lugar"
+                    height="200"
+                  />
+                  <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">
+                      <i class="fa-solid fa-map-marker-alt text-danger"></i>
+                      {{ lugar.nombre }}
+                    </h5>
+                    <p class="text-muted">
+                      <i class="fa-solid fa-location-dot"></i>
+                      {{ lugar.ubicacion }}
+                    </p>
+                    <p class="small">{{ lugar.descripcion }}</p>
+                    <div class="mt-auto">
+                      <button
+                        class="btn btn-outline-primary btn-sm w-100"
+                        (click)="verMas(lugar)"
+                      >
+                        Ver más
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+
+          <!-- Botones de desplazamiento -->
+          <button
+            class="btn btn-primary btn-lg p-3 shadow position-absolute start-0 top-50 translate-middle-y"
+            (click)="scrollLeft()"
+          >
+            <i class="fa-solid fa-angles-left"></i>
+          </button>
+
+          <button
+            class="btn btn-primary btn-lg p-3 shadow position-absolute end-0 top-50 translate-middle-y"
+            (click)="scrollRight()"
+          >
+            <i class="fa-solid fa-angles-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

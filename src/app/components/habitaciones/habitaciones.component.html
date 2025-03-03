@@ -1,0 +1,384 @@
+<app-navbar></app-navbar>
+<app-filtro-hoteles [filtros]="filtros"></app-filtro-hoteles>
+
+<div class="container">
+  <div class="row">
+    <div class="container text-center mb-4">
+      <h2 class="fw-bold text-primary">
+        <i class="fa-solid fa-hotel"></i> {{ hotelNombre }}
+      </h2>
+    </div>
+
+    <div *ngIf="mensajeBusqueda" class="alert alert-warning text-center">
+      <i class="fa-solid fa-circle-info"></i> {{ mensajeBusqueda }}
+    </div>
+
+    <!-- Sección de comentarios -->
+    <div class="col-md-3 d-none d-md-block col-12">
+      <app-list-comentarios [isLoading]="isLoading"></app-list-comentarios>
+    </div>
+
+    <!-- Lista de habitaciones -->
+    <div class="col-12 col-md-6">
+      <div class="row align-items-center mb-3">
+        <div class="col-12 col-md-auto">
+          <h5 class="text-secondary m-0">Habitaciones disponibles</h5>
+          <h5 class="fw-bold text-primary m-0 mt-1">
+            <i class="fa-solid fa-star"></i> Mejores opciones
+          </h5>
+        </div>
+
+        <div class="col-12 col-md-auto ms-auto d-flex gap-2 mt-2 mt-md-0">
+          <div class="form-floating">
+            <input
+              type="number"
+              id="precioMin"
+              class="form-control"
+              [(ngModel)]="filtroPrecioMin"
+              (input)="filtrarPorPrecio()"
+            />
+            <label for="precioMin">Precio mínimo:</label>
+          </div>
+          <div class="form-floating">
+            <input
+              type="number"
+              id="precioMax"
+              class="form-control"
+              [(ngModel)]="filtroPrecioMax"
+              (input)="filtrarPorPrecio()"
+            />
+            <label for="precioMax">Precio máximo:</label>
+          </div>
+        </div>
+      </div>
+
+      <ng-container *ngIf="isLoading; else mostrarHabitaciones">
+        <div *ngFor="let i of [1, 2, 3]" class="card shadow-sm mb-3">
+          <div class="card-body d-flex align-items-center">
+            <!-- Placeholder de imagen -->
+            <span
+              class="placeholder placeholder-wave rounded-3 shadow-sm me-3"
+              style="width: 200px; height: 150px"
+            ></span>
+
+            <div class="flex-grow-1">
+              <p class="placeholder placeholder-wave col-6"></p>
+              <p class="placeholder placeholder-wave col-8 mb-1"></p>
+              <p class="placeholder placeholder-wave col-6 fw-bold"></p>
+              <p class="placeholder placeholder-wave col-6 fw-bold"></p>
+              <p class="placeholder placeholder-wave col-6 fw-bold"></p>
+              <p class="placeholder placeholder-wave col-5 fw-bold"></p>
+              <span
+                class="placeholder placeholder-wave btn btn-primary bg-primary w-100 rounded-pill"
+              ></span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #mostrarHabitaciones>
+        <div class="scroll-container">
+          <div
+            class="card shadow-sm mb-3 d-flex flex-row"
+            *ngFor="let habitacion of habitaciones.mejorOpcion"
+            style="height: 270px"
+          >
+            <div
+              *ngIf="
+                imagenesHabitaciones[habitacion.habitacion_id] &&
+                imagenesHabitaciones[habitacion.habitacion_id].length > 0
+              "
+              [id]="'carousel-' + habitacion.habitacion_id"
+              class="carousel slide shadow-sm rounded-start"
+              style="width: 250px; height: 100%"
+              data-bs-ride="carousel"
+            >
+              <div class="carousel-inner" style="height: 100%">
+                <div
+                  *ngFor="
+                    let imagen of imagenesHabitaciones[
+                      habitacion.habitacion_id
+                    ];
+                    let i = index
+                  "
+                  class="carousel-item"
+                  [class.active]="i === 0"
+                  style="height: 100%"
+                >
+                  <img
+                    [src]="imagen"
+                    class="d-block w-100 h-100 rounded-start"
+                    alt="Imagen de la habitación"
+                    style="object-fit: cover"
+                  />
+                </div>
+              </div>
+
+              <button
+                class="carousel-control-prev"
+                type="button"
+                [attr.data-bs-target]="'#carousel-' + habitacion.habitacion_id"
+                data-bs-slide="prev"
+                style="width: 20px"
+              >
+                <span
+                  class="carousel-control-prev-icon"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Anterior</span>
+              </button>
+              <button
+                class="carousel-control-next"
+                type="button"
+                [attr.data-bs-target]="'#carousel-' + habitacion.habitacion_id"
+                data-bs-slide="next"
+                style="width: 20px"
+              >
+                <span
+                  class="carousel-control-next-icon"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Siguiente</span>
+              </button>
+            </div>
+
+            <!-- Contenido a la derecha -->
+            <div class="card-body d-flex flex-column justify-content-between">
+              <div>
+                <h6 class="card-title text-secondary mb-1">
+                  <i class="fa-solid fa-bed"></i>
+                  {{ habitacion.tipo_habitacion }}
+                </h6>
+                <p class="card-text mb-0">
+                  <strong
+                    ><i class="fa-solid fa-hashtag"></i> No. Habitación:</strong
+                  >
+                  {{ habitacion.numero_habitacion }}
+                </p>
+                <p class="card-text mb-0">
+                  <strong
+                    ><i class="fa-solid fa-user-group"></i> Capacidad:</strong
+                  >
+                  {{ habitacion.capacidad }} persona(s)
+                </p>
+                <p class="card-text mb-0">
+                  <strong
+                    ><i class="fa-solid fa-bed"></i> Número de camas:</strong
+                  >
+                  {{ habitacion.camas }}
+                </p>
+                <p class="card-text fw-bold text-success mb-0">
+                  <strong>Precio base:</strong> MXN ${{
+                    habitacion.precio_base
+                  }}
+                </p>
+                <p class="card-text text-warning mb-0">
+                  {{ habitacion.mensaje }}
+                </p>
+                <p class="card-text text-warning mb-0">
+                  {{ habitacion.extras }}
+                </p>
+                <p class="card-text fw-bold text-success mb-0">
+                  <strong>Precio por noche:</strong> MXN ${{
+                    habitacion.precio_calculado
+                  }}
+                </p>
+                <p class="card-text fw-bold text-success mb-0">
+                  <strong>Precio Total:</strong> MXN ${{
+                    habitacion.precio_total
+                  }}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                class="btn btn-primary btn-sm w-100 rounded-pill shadow-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#reserva"
+                (click)="seleccionarHabitacion(habitacion)"
+              >
+                <i class="fa-solid fa-calendar-check"></i> Reservar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="habitaciones.mejorOpcion.length === 0">
+          <div class="alert alert-danger text-center" role="alert">
+            No hay habitaciones disponibles.
+            <a
+              routerLink="/habitaciones"
+              fragment="otrasopciones"
+              class="alert-link fw-bold"
+              >Ver otras opciones</a
+            >
+          </div>
+        </div>
+        <!-- ------------------------------------- -->
+      </ng-template>
+    </div>
+
+    <!-- Comentarios -->
+    <div class="col-12 col-md-3">
+      <app-comentarios [isLoading]="isLoading"></app-comentarios>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-5" #otrasopciones id="otrasopciones">
+  <div class="row">
+    <div class="col-12 col-mf-8">
+      <div class="card p-4 shadow-lg border-0 rounded-4">
+        <h4 class="fw-bold text-primary text-center mb-3">
+          <i class="fa-solid fa-bed"></i> Otras Habitaciones Disponibles
+        </h4>
+        <div class="position-relative">
+          <div class="d-flex overflow-auto gap-3 p-2" id="scrollContainer">
+            <div
+              class="col-md-4 mb-3 d-flex flex-shrink-0"
+              *ngFor="let habitacion of habitaciones.otrasHabitaciones"
+            >
+              <div
+                class="card lugar-card shadow-sm rounded-4"
+                style="width: 25rem"
+              >
+                <!-- Carrusel a la izquierda, más ancho y ocupando todo el alto -->
+                <div
+                  *ngIf="
+                    imagenesHabitaciones[habitacion.habitacion_id] &&
+                    imagenesHabitaciones[habitacion.habitacion_id].length > 0
+                  "
+                  [id]="'carousel-' + habitacion.habitacion_id"
+                  class="carousel slide shadow-sm rounded-start"
+                  style="width: 100%; height: 100%"
+                  data-bs-ride="carousel"
+                >
+                  <div class="carousel-inner" style="height: 100%">
+                    <div
+                      *ngFor="
+                        let imagen of imagenesHabitaciones[
+                          habitacion.habitacion_id
+                        ];
+                        let i = index
+                      "
+                      class="carousel-item"
+                      [class.active]="i === 0"
+                      style="height: 100%"
+                    >
+                      <img
+                        [src]="imagen"
+                        class="d-block w-100 h-100 rounded-start"
+                        alt="Imagen de la habitación"
+                        style="object-fit: cover"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    class="carousel-control-prev"
+                    type="button"
+                    [attr.data-bs-target]="
+                      '#carousel-' + habitacion.habitacion_id
+                    "
+                    data-bs-slide="prev"
+                    style="width: 20px"
+                  >
+                    <span
+                      class="carousel-control-prev-icon"
+                      aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Anterior</span>
+                  </button>
+                  <button
+                    class="carousel-control-next"
+                    type="button"
+                    [attr.data-bs-target]="
+                      '#carousel-' + habitacion.habitacion_id
+                    "
+                    data-bs-slide="next"
+                    style="width: 20px"
+                  >
+                    <span
+                      class="carousel-control-next-icon"
+                      aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Siguiente</span>
+                  </button>
+                </div>
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title fw-bold text-secondary">
+                    {{ habitacion.tipo_habitacion }}
+                  </h5>
+                  <p class="card-text mb-1">
+                    <strong>No. Habitación:</strong>
+                    {{ habitacion.numero_habitacion }}
+                  </p>
+                  <p class="card-text mb-1">
+                    <strong>Capacidad:</strong>
+                    {{ habitacion.capacidad }} persona(s)
+                  </p>
+                  <p class="card-text fw-bold">
+                    <strong>Número de camas:</strong> {{ habitacion.camas }}
+                  </p>
+                  <p class="card-text fw-bold text-success">
+                    <strong
+                      ><i class="fa-solid fa-dollar-sign"></i> Precio
+                      base:</strong
+                    >
+                    MXN ${{ habitacion.precio_base }}
+                  </p>
+
+                  <p class="card-text text-warning">
+                    {{ habitacion.mensaje }}
+                  </p>
+
+                  <p class="card-text fw-bold text-success">
+                    <strong>Precio por noche:</strong> MXN
+                    {{ habitacion.precio_calculado }}
+                  </p>
+
+                  <p class="card-text fw-bold text-success">
+                    <strong>Precio Total:</strong> MXN ${{
+                      habitacion.precio_total
+                    }}
+                  </p>
+
+                  <div class="mt-auto">
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-lg w-100 shadow-sm"
+                      data-bs-toggle="modal"
+                      data-bs-target="#reserva"
+                      (click)="seleccionarHabitacion(habitacion)"
+                    >
+                      <i class="fa-solid fa-calendar-check"></i> Reservar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="btn btn-primary btn-lg p-3 shadow position-absolute start-0 top-50 translate-middle-y"
+            (click)="scrollLeft()"
+          >
+            <i class="fa-solid fa-angles-left"></i>
+          </button>
+
+          <button
+            class="btn btn-primary btn-lg p-3 shadow position-absolute end-0 top-50 translate-middle-y"
+            (click)="scrollRight()"
+          >
+            <i class="fa-solid fa-angles-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal-reserva
+  [habitacion]="habitacionSeleccionada"
+  [filtrosOriginales]="filtrosOriginales"
+></app-modal-reserva>

@@ -1,0 +1,80 @@
+<div class="modal fade" id="reserva" tabindex="-1" aria-labelledby="reservaLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h1 class="modal-title fs-5 text-white" id="reservaLabel">
+          Reservar habitación
+        </h1>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="align-items-center text-center p-3">
+          <img src="assets/habitacion2.jpg" alt="lugar" height="200" />
+        </div>
+        <h5 class="card-title text-secondary">Resumen de la reserva</h5>
+
+        <!-- Resumen de habitación -->
+        <div *ngIf="habitacion">
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <td><strong>No. Habitación:</strong></td>
+                <td>{{ habitacion.numero_habitacion }}</td>
+              </tr>
+              <tr>
+                <td><strong>Capacidad:</strong></td>
+                <td>{{ habitacion.capacidad }} persona(s)</td>
+              </tr>
+              <tr>
+                <td><strong>Número de camas:</strong></td>
+                <td>{{ habitacion.camas }}</td>
+              </tr>
+              <tr>
+                <td><strong>Precio por noche:</strong></td>
+                <td>MXN ${{ habitacion.precio_base }}</td>
+              </tr>
+        
+              <!-- Mostrar Adultos Extra solo si hay -->
+              <tr *ngIf="habitacion.adultosExtras && habitacion.adultosExtras > 0">
+                <td><strong>Adultos extra:</strong></td>
+                <td>{{ habitacion.adultosExtras }}</td>
+              </tr>
+              <tr *ngIf="habitacion.costoFinalAdultos && habitacion.costoFinalAdultos > 0">
+                <td><strong>Costo Extra (30% por adulto):</strong></td>
+                <td>MXN ${{ habitacion.costoFinalAdultos }}</td>
+              </tr>
+        
+              <!-- Mostrar Niños Extra solo si hay -->
+              <tr *ngIf="habitacion.ninosExtras && habitacion.ninosExtras > 0">
+                <td><strong>Niños extra:</strong></td>
+                <td>{{ habitacion.ninosExtras }}</td>
+              </tr>
+              <tr *ngIf="habitacion.costoFinalNinos && habitacion.costoFinalNinos > 0">
+                <td><strong>Costo Extra (15% por niño):</strong></td>
+                <td>MXN ${{ habitacion.costoFinalNinos }}</td>
+              </tr>
+        
+              <!-- Precio Total -->
+              <tr>
+                <td><strong>Precio Por noche:</strong></td>
+                <td class="text-success">MXN ${{ habitacion.precio_calculado }}</td>
+              </tr>
+              <tr>
+                <td><strong>Precio total:</strong></td>
+                <td>MXN ${{ habitacion.precio_total }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="continuarReserva()">
+          Continuar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

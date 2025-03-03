@@ -1,0 +1,207 @@
+<form id="payment-form">
+  <input type="hidden" id="device_session_id" name="device_session_id" />
+
+  <div class="row">
+    <!-- DATOS DE LA TARJETA -->
+    <div class="col-md-6">
+      <h4 class="mb-3 text-primary">Datos de la Tarjeta</h4>
+
+      <div class="mb-2">
+        <label for="card_number" class="form-label">Número de tarjeta</label>
+        <input
+          type="text"
+          class="form-control"
+          id="card_number"
+          [(ngModel)]="tarjeta.card_number"
+          name="card_number"
+          required
+        />
+        <small class="text-danger" *ngIf="errores.card_number">{{
+          errores.card_number
+        }}</small>
+      </div>
+
+      <div class="mb-2">
+        <label for="holder_name" class="form-label">Nombre en la tarjeta</label>
+        <input
+          type="text"
+          class="form-control"
+          id="holder_name"
+          [(ngModel)]="tarjeta.holder_name"
+          name="holder_name"
+          required
+        />
+        <small class="text-danger" *ngIf="errores.holder_name">{{
+          errores.holder_name
+        }}</small>
+      </div>
+
+      <div class="row">
+        <div class="col-6 mb-2">
+          <label for="expiration_date" class="form-label">Expiración</label>
+          <input
+            type="text"
+            class="form-control"
+            id="expiration_date"
+            [(ngModel)]="tarjeta.expiration_date"
+            name="expiration_date"
+            placeholder="MM/YY"
+            required
+          />
+          <small class="text-danger" *ngIf="errores.expiration_date">{{
+            errores.expiration_date
+          }}</small>
+        </div>
+        <div class="col-6 mb-2">
+          <label for="cvv" class="form-label">CVV</label>
+          <input
+            type="text"
+            class="form-control"
+            id="cvv"
+            [(ngModel)]="tarjeta.cvv"
+            name="cvv"
+            required
+          />
+          <small class="text-danger" *ngIf="errores.cvv">{{
+            errores.cvv
+          }}</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATOS DEL CLIENTE -->
+    <div class="col-md-6">
+      <h4 class="mb-3 text-primary">Datos del Cliente</h4>
+
+      <div class="row">
+        <div class="col-6 mb-2">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input
+            type="text"
+            class="form-control"
+            id="nombre"
+            [(ngModel)]="cliente.nombre"
+            name="nombre"
+            required
+          />
+          <small class="text-danger" *ngIf="errores.nombre">{{
+            errores.nombre
+          }}</small>
+        </div>
+        <div class="col-6 mb-2">
+          <label for="apellido" class="form-label">Apellido</label>
+          <input
+            type="text"
+            class="form-control"
+            id="apellido"
+            [(ngModel)]="cliente.apellido"
+            name="apellido"
+            required
+          />
+          <small class="text-danger" *ngIf="errores.apellido">{{
+            errores.apellido
+          }}</small>
+        </div>
+      </div>
+
+      <div class="mb-2">
+        <label for="correo" class="form-label">Correo Electrónico</label>
+        <input
+          type="email"
+          class="form-control"
+          id="correo"
+          [(ngModel)]="cliente.correo"
+          name="correo"
+          required
+        />
+        <small class="text-danger" *ngIf="errores.correo">{{
+          errores.correo
+        }}</small>
+      </div>
+
+      <div class="row">
+        <div class="col-6 mb-2">
+          <label for="telefono" class="form-label">Teléfono</label>
+          <input
+            type="text"
+            class="form-control"
+            id="telefono"
+            [(ngModel)]="cliente.telefono"
+            name="telefono"
+          />
+          <small class="text-danger" *ngIf="errores.telefono">{{
+            errores.telefono
+          }}</small>
+        </div>
+        <div class="col-6 mb-2">
+          <label for="codigo_postal" class="form-label">Código Postal</label>
+          <input
+            type="text"
+            class="form-control"
+            id="codigo_postal"
+            [(ngModel)]="cliente.codigo_postal"
+            name="codigo_postal"
+          />
+          <small class="text-danger" *ngIf="errores.codigo_postal">{{
+            errores.codigo_postal
+          }}</small>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6 mb-2">
+          <label for="ciudad" class="form-label">Ciudad</label>
+          <input
+            type="text"
+            class="form-control"
+            id="ciudad"
+            [(ngModel)]="cliente.ciudad"
+            name="ciudad"
+          />
+          <small class="text-danger" *ngIf="errores.ciudad">{{
+            errores.ciudad
+          }}</small>
+        </div>
+        <div class="col-6 mb-2">
+          <label for="estado" class="form-label">Estado</label>
+          <input
+            type="text"
+            class="form-control"
+            id="estado"
+            [(ngModel)]="cliente.estado"
+            name="estado"
+          />
+          <small class="text-danger" *ngIf="errores.estado">{{
+            errores.estado
+          }}</small>
+        </div>
+      </div>
+
+      <div class="mb-2">
+        <label for="direccion" class="form-label">Dirección</label>
+        <input
+          type="text"
+          class="form-control"
+          id="direccion"
+          [(ngModel)]="cliente.direccion"
+          name="direccion"
+        />
+        <small class="text-danger" *ngIf="errores.direccion">{{
+          errores.direccion
+        }}</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTÓN DE PAGO -->
+  <div class="text-center mt-3">
+    <button
+      type="button"
+      class="btn btn-success btn-lg w-100"
+      (click)="realizarPago()"
+    >
+      <i class="fa-solid fa-credit-card"></i> Pagar MXN
+      {{ totalReserva | currency : "MXN" }}
+    </button>
+  </div>
+</form>

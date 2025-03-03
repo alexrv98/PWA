@@ -1,0 +1,57 @@
+<app-navbar></app-navbar>
+<div class="d-flex justify-content-center align-items-center">
+  <div class="container">
+    <h2 class="m-4 text-center">Reservaciones de {{ nombreHotel }}</h2>
+
+    <div
+      *ngIf="reservaciones.length > 0; else sinReservaciones"
+      class="card shadow-sm p-4"
+    >
+      <div class="table-responsive">
+        <table
+          class="table table-striped table-hover table-bordered shadow-sm"
+          datatable
+          [dtOptions]="dtOptions"
+        >
+          <thead class="table-primary">
+            <tr>
+              <th>ID</th>
+              <th>Habitación</th>
+              <th>Tipo</th>
+              <th>Capacidad</th>
+              <th>Precio por noche</th>
+              <th>Fecha Inicio</th>
+              <th>Fecha Fin</th>
+              <th>Total a Pagar</th>
+              <th>Reservado por</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reserva of reservaciones">
+              <td>{{ reserva.reservacion_id }}</td>
+              <td>{{ reserva.numero_habitacion }}</td>
+              <td>{{ reserva.tipo_habitacion }}</td>
+              <td>{{ reserva.capacidad }}</td>
+              <td>{{ reserva.precio | currency : "USD" }}</td>
+              <td>{{ reserva.fecha_inicio | date : "dd/MM/yyyy" }}</td>
+              <td>{{ reserva.fecha_fin | date : "dd/MM/yyyy" }}</td>
+              <td>{{ reserva.total_a_pagar | currency : "USD" }}</td>
+              <td>
+                {{ reserva.nombre_usuario }} <br />
+                {{ reserva.correo_usuario }}
+              </td>
+              <td>{{ reserva.estado }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <ng-template #sinReservaciones>
+      <p class="text-center text-muted mt-4">
+        No hay reservaciones para este hotel.
+      </p>
+    </ng-template>
+  </div>
+</div>

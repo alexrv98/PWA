@@ -1,0 +1,133 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <div class="row">
+    <h2 class="mb-4">Mis Reservaciones</h2>
+
+    <ng-container *ngIf="isLoading; else mostrarReservaciones">
+      <div class="col-md-4 mb-3" *ngFor="let _ of [1, 2, 3]">
+        <div class="card p-5 ticket-card text-center">
+          <span class="placeholder col-6 mb-4"
+            style="height: 50px; background-color: #ddd; display: inline-block"></span>
+
+          <h4 class="text-center text-primary">
+            <span class="placeholder col-8 placeholder-glow"></span>
+          </h4>
+
+          <div class="text-center ticket-line"></div>
+
+          <div class="ticket-info">
+            <p>
+              <span class="placeholder col-8 placeholder-wave"></span>
+            </p>
+
+            <p>
+              <span class="placeholder col-8 placeholder-glow"></span>
+            </p>
+
+            <p>
+              <span class="placeholder col-8 placeholder-wave"></span>
+            </p>
+
+            <p>
+              <span class="placeholder col-8 placeholder-glow"></span>
+            </p>
+
+            <p>
+              <span class="placeholder col-8 placeholder-wave"></span>
+            </p>
+
+            <p>
+              <span class="placeholder col-8 placeholder-glow"></span>
+            </p>
+
+            <h4 class="text-success fw-bold">
+              <span class="placeholder col-3 placeholder-wave"></span>
+            </h4>
+          </div>
+
+          <div class="text-center ticket-line"></div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #mostrarReservaciones>
+      <div class="col-md-4 mb-3 d-flex" *ngFor="let reservacion of reservaciones">
+        <div class="reservation-container w-100">
+          <div class="reservation-header">
+            <img src="/assets/logo.png" alt="logo" class="reservation-logo" />
+            <h4 class="text-primary fw-bold">Detalles de tu Reserva</h4>
+          </div>
+
+          <div class="reservation-divider"></div>
+
+          <table class="reservation-table">
+            <tr>
+              <td><strong>ID Reserva:</strong></td>
+              <td>{{ reservacion.reservacion_id }}</td>
+            </tr>
+            <tr>
+              <td><strong>Hotel:</strong></td>
+              <td>{{ reservacion.nombre_hotel }}</td>
+            </tr>
+            <tr>
+              <td><strong>Habitación:</strong></td>
+              <td>{{ reservacion.numero_habitacion }} {{ reservacion.tipo_habitacion }}</td> 
+            </tr>
+            <tr>
+              <td><strong>Capacidad:</strong></td>
+              <td>{{ reservacion.capacidad }} personas</td>
+            </tr>
+            <tr>
+              <td><strong>Fechas:</strong></td>
+              <td>{{ reservacion.fecha_inicio }} → {{ reservacion.fecha_fin }}</td>
+            </tr>
+            <tr>
+              <td><strong>Días hospedados:</strong></td>
+              <td>{{ reservacion.total_dias_hospedaje }}</td>
+            </tr>
+            <tr>
+              <td><strong>Huéspedes:</strong></td>
+              <td>{{ reservacion.num_adultos }} adultos, {{ reservacion.num_ninos }} niños</td>
+            </tr>
+            <tr>
+              <td><strong>ID Transacción:</strong></td>
+              <td>{{ reservacion.id_transaccion }}</td>
+            </tr>
+          </table>
+
+          <div class="reservation-divider"></div>
+
+          <div class="reservation-footer">
+            <h5 class="text-success fw-bold">
+              <i class="fa-solid fa-money-bill-wave"></i> Total: MXN ${{
+              reservacion.total_a_pagar }}
+            </h5>
+          </div>
+
+          <div class="reservation-buttons">
+            <button class="btn btn-primary" (click)="irAComentarios(reservacion)"
+              *ngIf="reservacion.estado !== 'cancelada'">
+              Comentar
+            </button>
+
+            <button class="btn" (click)="cancelarReserva(reservacion)"
+              [ngClass]="{'btn-danger': reservacion.estado !== 'cancelada', 'btn-secondary': reservacion.estado === 'cancelada'}"
+              [disabled]="reservacion.estado === 'cancelada'" *ngIf="reservacion.estado !== 'cancelada'">
+              Cancelar Reserva
+            </button>
+
+            <button class="btn btn-secondary" *ngIf="reservacion.estado === 'cancelada'">
+              Reserva Cancelada
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+
+
+  </div>
+</div>
+
+<app-footer></app-footer>

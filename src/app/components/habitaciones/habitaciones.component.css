@@ -1,0 +1,67 @@
+/* Animación para los lugares filtrados */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Aplicar animación a cada lugar */
+.card {
+  animation: fadeIn 0.6s ease-out;
+}
+.lugar-card {
+  border: 2px solid #ddd; /* Contorno */
+  border-radius: 20px; /* Bordes redondeados */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 100%; /* Hace que todas las cards sean del mismo tamaño */
+  display: flex;
+  flex-direction: column;
+}
+
+.lugar-card:hover,
+.lugar-card:focus-within {
+  transform: translateY(-5px); /* Efecto de flotación */
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+  object-fit: cover; /* Hace que la imagen mantenga su proporción */
+  width: 100%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.card-body {
+  flex-grow: 1; /* Hace que el contenido de la card se distribuya correctamente */
+}
+
+.col-md-4 {
+  display: flex;
+}
+h4 {
+  color: #ffff;
+}
+.scroll-container {
+  max-height: 500px; /* Ajusta la altura máxima según lo necesario */
+  overflow-y: auto;
+  padding-right: 10px; /* Espacio para evitar que se solape el scroll */
+}
+
+/* Personalización opcional del scroll */
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: #007bff; /* Azul Bootstrap */
+  border-radius: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}

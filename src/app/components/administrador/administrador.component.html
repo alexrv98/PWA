@@ -1,0 +1,95 @@
+<app-navbar></app-navbar>
+<div class="container m-3">
+  <ng-container *ngIf="isLoading; else mostrarHoteles">
+    <div class="row">
+      <div class="col-md-3" *ngFor="let _ of [1]">
+        <div class="card shadow-sm lugar-card w-100">
+          <!-- Placeholder para la imagen -->
+          <span
+            class="placeholder placeholder-wave col-12 rounded-top"
+            style="height: 150px; display: block"
+          ></span>
+
+          <div class="card-body d-flex flex-column">
+            <!-- Placeholders para los textos -->
+            <h5 class="card-title">
+              <span class="placeholder placeholder-glow col-10"></span>
+              <br />
+              <span class="placeholder placeholder-wave col-8"></span>
+            </h5>
+
+            <h5 class="card-title">
+              <span class="placeholder placeholder-glow col-6"></span>
+            </h5>
+
+            <p class="card-text">
+              <span class="placeholder placeholder-wave col-12"></span>
+              <span class="placeholder placeholder-glow col-8"></span>
+            </p>
+
+            <p>
+              <span class="placeholder col-10"></span>
+            </p>
+            <p>
+              <span class="placeholder col-6"></span>
+            </p>
+            <p><span class="placeholder col-3"></span></p>
+          </div>
+       
+          
+        </div>
+      </div>
+
+      <!-- Placeholder para la tabla de habitaciones -->
+      <div class="col-md-9" *ngFor="let _ of [1]">
+        <div class="card p-3">
+          <span
+            class="placeholder placeholder-wave col-12"
+            style="height: 400px; display: block"
+          ></span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Mostrar los hoteles cuando cargue -->
+  <ng-template #mostrarHoteles>
+    <div *ngIf="hoteles.length > 0; else sinHoteles">
+      <div class="row">
+        <div class="col-md-3" *ngFor="let hotel of hoteles">
+          <div class="card shadow-sm lugar-card w-100">
+            <img
+              *ngIf="hotel.imagenes"
+              [src]="hotel.imagenes"
+              alt="Imagen del hotel"
+              class="card-img-top"
+              style="height: 150px; object-fit: cover"
+            />
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">
+                {{ hotel.nombre }} <br />
+                {{ hotel.ubicacion }}
+              </h5>
+              <h5 class="card-title">{{ hotel.nombre }}</h5>
+              <p class="card-text">{{ hotel.descripcion }}</p>
+              <p><strong>Dirección:</strong> {{ hotel.direccion }}</p>
+              <p><strong>Teléfono:</strong> {{ hotel.telefono }}</p>
+              <p><strong>Capacidad:</strong> {{ hotel.capacidad }} personas</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-9" *ngFor="let hotel of hoteles">
+          <!-- Columna para la tabla de habitaciones -->
+          <app-habitaciones-admin [hotelId]="hotel.id"></app-habitaciones-admin>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #sinHoteles>
+    <p class="text-center text-muted">No hay hoteles disponibles.</p>
+  </ng-template>
+</div>
+
+<app-footer></app-footer>

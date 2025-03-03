@@ -1,0 +1,67 @@
+F<!-- Fondo oscuro -->
+<div class="modal-backdrop fade show"></div>
+
+<div class="modal fade show d-block" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="modal-title">Agregar Nueva Habitación</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cerrarModal.emit()"></button>
+      </div>
+
+      <div class="modal-body">
+        <div *ngIf="mensaje" class="alert" [ngClass]="{
+          'alert-success': tipoMensaje === 'success',
+          'alert-danger': tipoMensaje === 'error'
+        }">
+          <i *ngIf="tipoMensaje === 'success'" class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>
+          <i *ngIf="tipoMensaje === 'error'" class="fas fa-exclamation-circle text-danger me-2" aria-hidden="true"></i>
+          {{ mensaje }}
+        </div>
+
+        <form [formGroup]="habitacionForm">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label"><i class="fas fa-door-closed me-2" aria-hidden="true"></i>Número de
+                Habitación</label>
+              <input formControlName="numero_habitacion" class="form-control" placeholder="Ej. 101">
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label"><i class="fas fa-bed me-2" aria-hidden="true"></i>Tipo de Habitación</label>
+              <select formControlName="tipo_habitacion_id" class="form-select">
+                <option *ngFor="let tipo of tiposHabitacion" [value]="tipo.id">
+                  {{ tipo.nombre }} - {{ tipo.capacidad }} personas - {{ tipo.camas }} camas
+                </option>
+              </select>
+            </div>
+
+            <!-- Precio -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label"><i class="fas fa-dollar-sign me-2" aria-hidden="true"></i>Precio por
+                noche</label>
+              <input type="number" formControlName="precio" class="form-control" placeholder="Ej. 120">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold"><i class="fas fa-images me-2" aria-hidden="true"></i>Imágenes de la
+              habitación</label>
+            <input type="file" class="form-control" (change)="onImageSelect($event)">
+
+            <!-- Mostrar la imagen seleccionada (vista previa) -->
+            <div *ngIf="imagenSeleccionada">
+              <img [src]="imagenSeleccionada" alt="Vista previa" class="mt-2" style="max-width: 100%; height: auto;">
+            </div>
+          </div>
+
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="agregarHabitacion()">
+          <i class="fas fa-check me-2" aria-hidden="true"></i> Agregar
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal.emit()">
+          <i class="fas fa-times me-2" aria-hidden="true"></i> Cancelar

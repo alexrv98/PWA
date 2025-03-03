@@ -1,0 +1,106 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <h3 class="text-center text-primary fw-bold">Confirmar Reserva</h3>
+  <div class="row">
+    <div class="col-md-7">
+      <h4>Tus datos</h4>
+      <form #reservaForm="ngForm" (ngSubmit)="confirmarReserva()" novalidate>
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" id="nombre" class="form-control" [(ngModel)]="cliente.nombre" name="nombre" readonly />
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo</label>
+          <input type="email" id="email" class="form-control" [(ngModel)]="cliente.correo" name="email" readonly />
+        </div>
+
+        <app-openpay [totalReserva]="reserva.habitacion?.precio_total" (pagoExitoso)="actualizarEstadoPago($event)">
+        </app-openpay>
+        <br>
+        <div class="text-center mt-3">
+          <button type="submit" class="btn btn-success" [disabled]="!pagoRealizado">
+            Confirmar Reserva
+          </button>
+        </div>
+        
+      </form>
+    </div>
+    <div class="col-md-5">
+      <div class="reservation-container">
+        <!-- ENCABEZADO -->
+        <div class="reservation-header">
+          <img src="/assets/logo.png" alt="logo" class="reservation-logo" />
+          <h4 class="text-primary fw-bold">Detalles de la Reserva</h4>
+        </div>
+
+        <div class="reservation-divider"></div>
+
+        <!-- INFORMACIÓN GENERAL -->
+        <table class="reservation-table">
+          <tr>
+            <td><strong>Hotel:</strong></td>
+            <td>{{ reserva.destino }}</td>
+          </tr>
+          <tr>
+            <td><strong>Habitación:</strong></td>
+            <td>{{ reserva?.habitacion?.numero_habitacion }} - {{ reserva?.habitacion?.tipo_habitacion }}</td>
+          </tr>
+          <tr>
+            <td><strong>Fechas:</strong></td>
+            <td>{{ reserva?.fechaInicio }} → {{ reserva?.fechaFin }}</td>
+          </tr>
+          <tr>
+            <td><strong>Días hospedados:</strong></td>
+            <td>{{ calcularDiasHospedaje(reserva?.fechaInicio, reserva?.fechaFin) }}</td>
+          </tr>
+          <tr>
+            <td><strong>Capacidad:</strong></td>
+            <td>{{ reserva?.habitacion?.capacidad }} personas</td>
+          </tr>
+          <tr>
+            <td><strong>Huéspedes totales:</strong></td>
+            <td>{{ reserva?.huespedesAdultos }} adultos, {{ reserva?.huespedesNinos }} niños</td>
+          </tr>
+        </table>
+
+        <div class="reservation-divider"></div>
+
+        <!-- PRECIOS -->
+        <table class="reservation-table">
+          <tr>
+            <td><strong>Precio base/noche:</strong></td>
+            <td>MXN ${{ reserva?.habitacion?.precio_base }}</td>
+          </tr>
+          <tr *ngIf="reserva?.habitacion?.adultosExtras > 0">
+            <td><strong>Adultos extra:</strong></td>
+            <td>{{ reserva?.habitacion?.adultosExtras }} (+MXN ${{ reserva?.habitacion?.costoFinalAdultos }})</td>
+          </tr>
+          <tr *ngIf="reserva?.habitacion?.ninosExtras > 0">
+            <td><strong>Niños extra:</strong></td>
+            <td>{{ reserva?.habitacion?.ninosExtras }} (+MXN ${{ reserva?.habitacion?.costoFinalNinos }})</td>
+          </tr>
+          <tr>
+            <td><strong>Precio final/noche:</strong></td>
+            <td>MXN ${{ reserva?.habitacion?.precio_calculado }}</td>
+          </tr>
+        </table>
+
+        <div class="reservation-divider"></div>
+
+        <!-- TOTAL -->
+        <div class="reservation-footer">
+          <h5 class="text-success fw-bold">
+            <i class="fa-solid fa-money-bill-wave"></i> Total: MXN ${{ reserva?.habitacion?.precio_total }} por {{
+            calcularDiasHospedaje(reserva?.fechaInicio, reserva?.fechaFin) }} noches
+          </h5>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<app-footer></app-footer>

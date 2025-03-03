@@ -1,0 +1,34 @@
+<div class="modal-overlay">
+    <div class="modal-container">
+      <div *ngIf="mensaje" class="alert" [ngClass]="{
+        'alert-success': tipoMensaje === 'success',
+        'alert-danger': tipoMensaje === 'error'
+      }">
+        {{ mensaje }}
+      </div>
+      
+      <form [formGroup]="habitacionForm">
+        <div class="form-group">
+          <label>Número de Habitación</label>
+          <input formControlName="numero_habitacion" class="form-control">
+        </div>
+      
+        <div class="form-group">
+          <label>Tipo de Habitación</label>
+          <select formControlName="tipo_habitacion_id" class="form-control">
+            <option *ngFor="let tipo of tiposHabitacion" [value]="tipo.id">
+              {{ tipo.nombre }} - {{ tipo.capacidad }} personas - {{ tipo.camas }} camas
+            </option>
+          </select>
+        </div>
+      
+        <div class="form-group">
+          <label>Precio por noche</label>
+          <input type="number" formControlName="precio" class="form-control">
+        </div>
+      
+        <button type="button" class="btn btn-primary" (click)="editarHabitacion()">Guardar Cambios</button>
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal.emit()">Cancelar</button>
+      </form>
+    </div>
+</div>

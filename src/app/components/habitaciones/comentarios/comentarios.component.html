@@ -1,0 +1,149 @@
+<ng-container *ngIf="isLoading; else mostrarComentario">
+  <div class="card shadow-sm border-0 rounded-4 p-4">
+    <h4 class="mb-4 text-primary placeholder placeholder-wave col-5"></h4>
+
+    <div class="mb-3">
+      <label class="form-label">
+        <span
+          class="placeholder placeholder-wave rounded-circle me-2"
+          style="width: 24px; height: 24px"
+        ></span>
+      </label>
+      <span class="placeholder placeholder-wave col-12 form-control"></span>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">
+        <span class="placeholder placeholder-wave col-6"></span>
+      </label>
+      <span class="placeholder col-12 form-select"></span>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">
+        <span class="placeholder placeholder-wave col-5"></span>
+      </label>
+      <span
+        class="placeholder placeholder-wave col-12 form-control"
+        style="height: 80px"
+      ></span>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">
+        <span class="placeholder placeholder-wave col-3"></span>
+      </label>
+      <div class="d-flex gap-2">
+        <span
+          *ngFor="let star of [1, 2, 3, 4, 5]"
+          class="placeholder"
+          style="width: 20px; height: 20px"
+        ></span>
+      </div>
+    </div>
+
+    <button class="btn btn-primary w-100 disabled placeholder"></button>
+  </div>
+</ng-container>
+<ng-template #mostrarComentario>
+  <div class="card shadow-sm border-0 rounded-4 p-4">
+    <h4 class="mb-4 text-primary">Deja tu comentario</h4>
+
+    <div *ngIf="!estaAutenticado" class="alert alert-danger">
+      Debes iniciar sesión para dejar un comentario.
+    </div>
+
+    <input type="hidden" [(ngModel)]="nuevoComentario.usuarioId" />
+
+    <div class="mb-3" *ngIf="estaAutenticado">
+      <label class="form-label"
+        ><i
+          class="fa-solid fa-user-circle text-primary me-2"
+          style="font-size: 1.5rem"
+        ></i
+        >Usuario</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        [value]="usuarioNombre"
+        disabled
+      />
+    </div>
+
+    <!-- Selección de hotel basado en reservas -->
+    <div class="mb-3" *ngIf="estaAutenticado && hotelesReservados.length > 0">
+      <label for="hotel" class="form-label"
+        ><i class="fa-solid fa-hotel text-primary"></i> Selecciona el
+        hotel</label
+      >
+      <select
+        class="form-select rounded-3"
+        id="hotel"
+        [(ngModel)]="nuevoComentario.hotelId"
+        (change)="onHotelChange()"
+        required
+      >
+        <option value="" disabled>Selecciona un hotel...</option>
+        <option *ngFor="let hotel of hotelesReservados" [value]="hotel.id">
+          {{ hotel.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Mensaje de error si no hay hoteles reservados -->
+    <div
+      *ngIf="estaAutenticado && hotelesReservados.length === 0"
+      class="alert alert-warning"
+    >
+      No tienes reservas de hoteles disponibles para dejar un comentario.
+    </div>
+
+    <div class="mb-3">
+      <label for="comentario" class="form-label"
+        ><i class="fa-solid fa-pen text-primary"></i> Comentario</label
+      >
+      <textarea
+        class="form-control rounded-3"
+        id="comentario"
+        [(ngModel)]="nuevoComentario.texto"
+        rows="3"
+        placeholder="Escribe tu comentario"
+        required
+      ></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label"
+        ><i class="fa-solid fa-star"></i> Calificación</label
+      >
+      <div>
+        <span *ngFor="let star of estrellas; let i = index">
+          <i
+            class="fa-star"
+            [ngClass]="
+              i < nuevoComentario.calificacion
+                ? 'fa-solid text-warning'
+                : 'fa-regular'
+            "
+            (click)="seleccionarCalificacion(i + 1)"
+          ></i>
+        </span>
+      </div>
+    </div>
+
+    <!-- Botón de envío -->
+    <button
+      class="btn btn-primary w-100"
+      (click)="agregarComentario()"
+      [disabled]="
+        !estaAutenticado ||
+        !nuevoComentario.hotelId ||
+        !nuevoComentario.texto ||
+        nuevoComentario.calificacion === 0
+      "
+    >
+      <i class="fa-solid fa-paper-plane"></i> Enviar comentario
+    </button>
+  </div>
+</ng-template>
